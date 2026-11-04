@@ -1,0 +1,29 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+
+# Ultralytics cache & settings
+.ultralytics/
+runs/
+
+# Video outputs & generated artifacts
+*.mp4
+*.avi
+*.mov
+!input/*.avi
+!sample_videos/*.avi
+output/*
+!output/.gitkeep
+
+# IDE & OS
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
+
