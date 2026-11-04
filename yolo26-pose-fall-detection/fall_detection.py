@@ -53,7 +53,11 @@ def parse_args() -> argparse.Namespace:
         default="models/yolo26s-pose.pt",
         help="Path to the trained YOLO pose model (default: models/yolo26s-pose.pt)"
     )
-    parser.add_argument("--input", required=True, help="Path to the input video (mp4/avi/mov)")
+    parser.add_argument(
+        "--input",
+        default="0",
+        help="Path to the input video (mp4/avi/mov) or webcam index (default: '0' for live webcam)",
+    )
     parser.add_argument("--output", default="output/result.mp4", help="Path to write the annotated output video")
     parser.add_argument("--conf", type=float, default=0.4, help="Detection/keypoint confidence threshold (default 0.4)")
     parser.add_argument("--iou", type=float, default=0.5, help="NMS IoU threshold (default 0.5)")
@@ -128,8 +132,27 @@ def main() -> int:
         if not found:
             print(f"ERROR: model file not found: {args.model}")
             return 1
-    if not os.path.isfile(args.input):
-        print(f"ERROR: input video not found: {args.input}")
+    is_cam = str(args.input).isdigit()
+    if is_cam:
+        cam_id = int(args.input)
+        if sys.platform.startswith("win"):
+            cap = cv2.VideoCapture(cam_id, cv2.CAP_DSHOW)
+        else:
+            cap = cv2.VideoCapture(cam_id)
+        if not args.show:
+            args.show = True  # Auto-enable display for live webcam
+    else:
+        if not os.path.isfile(args.input):
+            alt_input = os.path.join(os.path.dirname(__file__), args.input)
+            if os.path.isfile(alt_input):
+                args.input = alt_input
+            else:
+                print(f"ERROR: input video not found: {args.input}")
+                return 1
+        cap = cv2.VideoCapture(args.input)
+
+    if not cap.isOpened():
+        print(f"ERROR: could not open input source: {args.input}")
         return 1
 
     print(f"[fall_detection] Loading model: {args.model}")
@@ -143,20 +166,15 @@ def main() -> int:
     )
     print(f"[fall_detection] Model task={detector.model.task} classes={detector.class_names}")
 
-    cap = cv2.VideoCapture(args.input)
-    if not cap.isOpened():
-        print(f"ERROR: could not open input video: {args.input}")
-        return 1
-
     fps = cap.get(cv2.CAP_PROP_FPS)
-    if not fps or fps <= 0:
-        print("[fall_detection] WARNING: video reports invalid FPS, assuming 25.0")
-        fps = 25.0
+    if not fps or fps <= 0 or fps > 120:
+        fps = 25.0 if not is_cam else 30.0
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) if not is_cam else 0
     duration = total_frames / fps if total_frames > 0 else 0.0
-    print(f"[fall_detection] Video: {width}x{height} @ {fps:.2f} FPS, ~{total_frames} frames (~{duration:.1f}s)")
+    source_label = f"Camera #{args.input}" if is_cam else args.input
+    print(f"[fall_detection] Source: {source_label} ({width}x{height} @ {fps:.1f} FPS)")
 
     writer = None
     if args.save:
@@ -309,8 +327,9 @@ def main() -> int:
                 writer.write(frame)
             if args.show:
                 cv2.imshow("fall_detection", frame)
-                if cv2.waitKey(0) & 0xFF == ord("q"):
-                    print("[fall_detection] 'q' pressed, stopping early.")
+                key = cv2.waitKey(1) & 0xFF
+                if key in (ord("q"), 27):
+                    print("[fall_detection] User requested exit ('q' or ESC pressed).")
                     break
 
             frame_idx += 1

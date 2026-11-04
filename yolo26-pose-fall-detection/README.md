@@ -1,10 +1,20 @@
-﻿# Fall Detection & Human Activity Recognition (YOLO26-Pose)
+# Fall Detection & Human Activity Recognition (YOLO26-Pose)
 
 Pose-based human activity recognition and fall detection over video, built
 on a **custom-trained YOLO26-pose model**. Detects and tracks people across
 frames and classifies each one as **STANDING**, **SITTING**, **WALKING**,
 **FALLING**, or **FALLEN**, with temporal smoothing so the state doesn't
 flicker between frames.
+
+---
+
+## 🎥 Visual Demos
+
+<div align="center">
+  <img src="../demo/demo_yolo26.gif" alt="YOLO26 Activity Recognition & Fall Demo" width="680px" />
+  <p><em>Real-time activity classification, 6-factor fall scoring, and immediate emergency trigger.</em></p>
+  <p>🎬 <strong>High-Res Demo:</strong> <a href="../demo/demo%20fall%20detection%20yolo26.mp4"><code>demo/demo fall detection yolo26.mp4</code></a> | <strong>CCTV Demo:</strong> <a href="../demo/cctv%20testing%20fall%20detection%20yolo26.mp4"><code>demo/cctv testing fall detection yolo26.mp4</code></a></p>
+</div>
 
 ## 1. About the model (inspected, not assumed)
 

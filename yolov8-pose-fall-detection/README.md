@@ -5,6 +5,16 @@ An enterprise-grade, edge-compatible AI computer vision system designed to detec
 
 ---
 
+## 🎥 Visual Demo
+
+<div align="center">
+  <img src="../demo/demo_yolo8.gif" alt="YOLOv8 Fall Detection Demo" width="700px" />
+  <p><em>Real-time 17-keypoint pose estimation, occlusion recovery, and kinematic state machine.</em></p>
+  <p>🎬 <strong>Full Recording:</strong> <a href="../demo/demo%20fall%20detection%20yolo8n.mp4"><code>demo/demo fall detection yolo8n.mp4</code></a></p>
+</div>
+
+---
+
 ## 🌟 Key Highlights
 
 - **⚡ Instant-Trigger Fall Detection**: Detects human falls the millisecond a rapid descent ($v_y > 0.7\text{ h/s}$) or posture collapse ($\Delta \theta / \Delta t > 35^\circ/\text{s}$) occurs, triggering immediate visual and dispatch alerts.

@@ -7,12 +7,57 @@ An enterprise-ready computer vision engineering workspace hosting two state-of-t
 
 ---
 
+## 🎥 Live System Demos & Visual Results
+
+Visual demonstrations of real-time pose estimation, activity recognition, occlusion resilience, and fall detection across varied camera perspectives.
+
+### 1. YOLO26 Pose: Activity Recognition & Fall Verification
+*Multi-stage temporal state machine tracking human posture transitions (`WALKING -> POSSIBLE_FALL -> FALLEN`) with 6-factor telemetry scoring:*
+
+<div align="center">
+  <img src="demo/demo_yolo26.gif" alt="YOLO26 Fall Detection Demo" width="720px" />
+  <p><em>Real-time skeleton tracking, posture geometry classification, and immediate FALL trigger.</em></p>
+  <p>🎬 <strong>Full Video:</strong> <a href="demo/demo%20fall%20detection%20yolo26.mp4"><code>demo/demo fall detection yolo26.mp4</code></a> (864x678 @ 30 FPS)</p>
+</div>
+
+---
+
+### 2. CCTV Surveillance Fall Detection (Low-Resolution Stream)
+*Testing real-time robustness under low-resolution, high-noise surveillance camera conditions:*
+
+<div align="center">
+  <img src="demo/demo_cctv_yolo26.gif" alt="CCTV Fall Detection Demo" width="600px" />
+  <p><em>Continuous monitoring and fall trigger on a 320x240 CCTV camera stream.</em></p>
+  <p>🎬 <strong>Full Video:</strong> <a href="demo/cctv%20testing%20fall%20detection%20yolo26.mp4"><code>demo/cctv testing fall detection yolo26.mp4</code></a> (320x240 @ 25 FPS)</p>
+</div>
+
+---
+
+### 3. YOLOv8 Pose: Occlusion Resilience & Kinematics
+*High-resolution elderly fall detection featuring bone length ratio imputation and false-positive sleeping rejection:*
+
+<div align="center">
+  <img src="demo/demo_yolo8.gif" alt="YOLOv8 Fall Detection Demo" width="720px" />
+  <p><em>17 COCO keypoint estimation, velocity extrapolation, and telemetry HUD visualizer.</em></p>
+  <p>🎬 <strong>Full Video:</strong> <a href="demo/demo%20fall%20detection%20yolo8n.mp4"><code>demo/demo fall detection yolo8n.mp4</code></a> (1920x1080 @ 30 FPS)</p>
+</div>
+
+---
+
 ## 📁 Workspace Architecture
 
 ```
 Fall Detection/
 │
 ├── .venv/                              # Shared Python 3.12 Virtual Environment
+├── demo/                               # Demo recordings, animated GIFs & preview posters
+│   ├── demo_yolo26.gif                 # Animated GIF: YOLO26 pipeline
+│   ├── demo_cctv_yolo26.gif            # Animated GIF: CCTV stream test
+│   ├── demo_yolo8.gif                  # Animated GIF: YOLOv8 pipeline
+│   ├── demo fall detection yolo26.mp4  # Full HD demo video
+│   ├── demo fall detection yolo8n.mp4  # Full HD demo video
+│   └── cctv testing fall detection.mp4 # Full CCTV video
+│
 ├── models/                             # Shared Pose Weights Repository
 │   ├── yolov8n-pose.pt                 # YOLOv8 Nano Pose (6.5 MB - ultra fast)
 │   ├── yolov8s-pose.pt                 # YOLOv8 Small Pose (23.5 MB)

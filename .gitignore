@@ -18,6 +18,10 @@ runs/
 *.mov
 !input/*.avi
 !sample_videos/*.avi
+!demo/*
+!demo/*.mp4
+!demo/*.gif
+!demo/*.png
 output/*
 !output/.gitkeep
 
